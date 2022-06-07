@@ -13,7 +13,7 @@ public class SegundoEjercicio
         string auxApellido = Console.ReadLine();
         Console.Write("Estado Civil [S/C/D/V] (Solter@/Casad@/Divorciad@/Viud@]: ");
         char auxEstadoCivil = Convert.ToChar(Console.ReadLine());
-        Console.Write("Genero: ");
+        Console.Write("Genero [M/F]: ");
         char auxGenero = Convert.ToChar(Console.ReadLine());
         Console.Write("Sueldo Basico: ");
         double auxSueldo = Convert.ToDouble(Console.ReadLine());
@@ -24,7 +24,7 @@ public class SegundoEjercicio
         int mesNacimiento = Convert.ToInt32(Console.ReadLine());
         Console.Write("Ano: ");
         int anoNacimiento = Convert.ToInt32(Console.ReadLine());
-        DateTime auxFechaNacimiento = new DateTime (anoNacimiento-mesNacimiento-diaNacimiento);
+        DateTime auxFechaNacimiento = new DateTime (anoNacimiento,mesNacimiento,diaNacimiento);
         Console.WriteLine("Siguiente, especifique la fecha de ingreso a la empresa: ");
         Console.Write("Dia: ");
         int diaIngreso = Convert.ToInt32(Console.ReadLine());
@@ -32,17 +32,42 @@ public class SegundoEjercicio
         int mesIngreso = Convert.ToInt32(Console.ReadLine());
         Console.Write("Ano: ");
         int anoIngreso = Convert.ToInt32(Console.ReadLine());
-        DateTime auxFechaIngreso = new DateTime(anoIngreso - mesIngreso - diaIngreso);
+        DateTime auxFechaIngreso = new DateTime(anoIngreso , mesIngreso , diaIngreso);
         Console.WriteLine("Por ultimo, ingrese el cargo que ocupa el empleado: ");
         Console.WriteLine("1) AUXILIAR");
         Console.WriteLine("2) INGENIERO");
         Console.WriteLine("3) ADMINISTRATIVO");
         Console.WriteLine("4) ESPECIALISTA");
         Console.WriteLine("5) INVESTIGADOR");
-        sistema.CLempleado.cargos auxCargo = CLempleado.cargos.(Convert.ToInt32(Console.ReadLine());
+        int aux = Convert.ToInt32(Console.ReadLine());
+        CLempleado.cargos auxCargo;
+        switch (aux) {
+            case 1:
+                auxCargo = CLempleado.cargos.auxiliar;
+                break;
+            case 2:
+                auxCargo = CLempleado.cargos.ingeniero;
+                break;
+            case 3:
+                auxCargo = CLempleado.cargos.administrativo;
+                break;
+            case 4:
+                auxCargo = CLempleado.cargos.especialista;
+                break;
+            case 5:
+                auxCargo = CLempleado.cargos.investigador;
+                break;
+                default: auxCargo = CLempleado.cargos.auxiliar;
+                break;
+        }
         
 
-        CLempleado empleado1 = new CLempleado(auxNombre,auxApellido,auxFechaNacimiento,auxSueldo,auxFechaIngreso,auxEstadoCivil,auxCargo);
-
+        CLempleado empleado1 = new CLempleado(auxNombre,auxApellido,auxFechaNacimiento,auxSueldo,auxFechaIngreso,auxEstadoCivil,auxCargo,auxGenero);
+        int antiguedad = empleado1.Antiguedad();
+        Console.WriteLine($"Años de antiguedad : {antiguedad}");
+        int restan = empleado1.Jubilacion();
+        Console.WriteLine($"Años restantes para la jubilacion:  {restan}");
+        double salario = Math.Round(empleado1.SalarioTotal());
+        Console.WriteLine($"Salario total del empleado: {salario}");
     }
 }

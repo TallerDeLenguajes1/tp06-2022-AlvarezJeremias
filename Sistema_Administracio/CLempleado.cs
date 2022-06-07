@@ -16,11 +16,11 @@ namespace sistema
         private DateTime fechaIngreso;
         private double sueldoBasico;
         public enum cargos {
-            auxiliar,
-            ingeniero,
-            administrativo,
-            especialista,
-            investigador,
+            auxiliar=1,
+            ingeniero=2,
+            administrativo=3,
+            especialista=4,
+            investigador=5
         }
         private cargos cargo;
 
@@ -62,7 +62,7 @@ namespace sistema
             get=>cargo;
             set=>cargo=value;
         }
-        public CLempleado(string aNombre, string aApellido, DateTime aFechaNacimiento, double aSueldoBasico,DateTime aFechaIngreso, char aEstadoCivil, cargos aCargo)
+        public CLempleado(string aNombre, string aApellido, DateTime aFechaNacimiento, double aSueldoBasico,DateTime aFechaIngreso, char aEstadoCivil, cargos aCargo,char aGenero)
         {
             nombre = aNombre;
             apellido = aApellido;
@@ -71,33 +71,75 @@ namespace sistema
             fechaIngreso=aFechaIngreso;
             estadoCivil=aEstadoCivil;
             cargo=aCargo;
+            genero = aGenero;
 
         }
         public int Antiguedad()
         {
-            int year = DateTime.Now.Year-fechaIngreso.Year;
+            int year;
+            if  (fechaIngreso.Month>=DateTime.Now.Month)
+            {
+                year = DateTime.Now.Year - fechaIngreso.Year;
+            } else
+            {
+                year = DateTime.Now.Year - fechaIngreso.Year  - 1;
+            }
             return year;
         }
         public int Edad ()
         {
-            int aux = DateTime.Now.Year-fechaNacimiento.Year;
+            int aux;
+            if (fechaNacimiento.Month>= DateTime.Now.Month)
+            {
+                aux= DateTime.Now.Year - fechaNacimiento.Year;
+            }
+            else
+            {
+                    aux= DateTime.Now.Year - fechaNacimiento.Year -1;
+            }
             return aux;
         }
         public int Jubilacion()
         {
             int restantes = 0;
-            if (genero == 'M' || genero == 'm')
+            if (genero == 'F' || genero == 'f')
             {
                 restantes = 60 - Edad();
             }
             else
             {
-                if (genero == 'H' || genero == 'h')
+                if (genero == 'M' || genero == 'm')
                 {
                     restantes = 65 - Edad();
                 }
+                else
+                {
+                    Console.WriteLine("Genero indicado incorrectamente");
+                }
             }
             return restantes;
+        }
+        public double SalarioTotal()
+        {
+            double extra = 0;
+            if (Antiguedad() <=20)
+            {
+                extra += Antiguedad() *0.1f * sueldoBasico;
+
+            }else if (Antiguedad() >20)
+            {
+                extra += SueldoBasico * 0.25f;            }
+
+            if (Cargo == cargos.ingeniero || Cargo == cargos.especialista)
+            {
+                extra += sueldoBasico * 0.5f;
+            }
+
+            if (estadoCivil == 'C')
+            {
+                extra += 15000;
+            }
+            return sueldoBasico + extra;
         }
         }
     }
